@@ -1,0 +1,12 @@
+# sample sampgo.toml file.
+
+## notes:
+# all globals go under the global table.
+# output can contain the file extension if wanted.
+
+[global]
+sampctl = false
+
+[build]
+input = "gofile.go"
+output = "libname.so"

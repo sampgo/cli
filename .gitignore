@@ -540,6 +540,9 @@ dkms.conf
 # Go sum file
 go.sum
 
+# Don't ignore go.mod, since it conflicts with fortran .mod
+!go.mod
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
 

@@ -7,6 +7,12 @@
 [global]
 sampctl = false
 
-[build]
+[author]
+user = "alextwothousand"
+repo = "cli"
+
+[package]
+name = "grandlarc"
+
 input = "gofile.go"
 output = "libname.so"

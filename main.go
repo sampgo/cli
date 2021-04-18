@@ -9,8 +9,9 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "sampgo",
-		Usage: "Interacts with the SA-MP server via Go",
+		EnableBashCompletion: true,
+		Name:                 "sampgo",
+		Usage:                "Interacts with the SA-MP server via Go",
 		Commands: []*cli.Command{
 			{
 				Name:   "init",

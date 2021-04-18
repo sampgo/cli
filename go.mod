@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.2.9 // indirect
+	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/komkom/toml v0.0.0-20210317065440-24f427ca88cc // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect

@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sampgo-cli/config"
 	"sampgo-cli/notify"
 	"strings"
 )
@@ -115,6 +116,23 @@ func Init(c *cli.Context) error {
 	if err != nil {
 		// One question probably wasn't answered.
 		notify.Error(err.Error())
+		return nil
+	}
+
+	conf := config.Config{}
+
+	conf.Global.Sampctl = sampctlFound
+
+	conf.Author.User = answers.Username
+	conf.Author.Repo = answers.Repo
+
+	conf.Package.Name = answers.Gomode
+	conf.Package.Input = answers.Input
+	conf.Package.Output = answers.Output
+
+	err = config.WriteToml(fileName, conf)
+	if err != nil {
+		notify.Error("sampgo configuration could not be written to.")
 		return nil
 	}
 

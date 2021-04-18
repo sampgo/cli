@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	toml2 "github.com/BurntSushi/toml"
 	"github.com/komkom/toml"
 	"io/ioutil"
+	"os"
 )
 
 // Config contains the basic TOML structure acceptable by sampgo.
@@ -24,6 +26,24 @@ type Config struct {
 		Input  string `json:"input"`
 		Output string `json:"output"`
 	} `json:"package"`
+}
+
+// WriteToml allows you to write a toml file.
+func WriteToml(fileName string, config Config) error {
+	f, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+
+	if err := toml2.NewEncoder(f).Encode(config); err != nil {
+		return err
+	}
+
+	if err := f.Close(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // ParseToml parses the toml file specified by the user.

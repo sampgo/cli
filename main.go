@@ -20,8 +20,15 @@ func main() {
 				Action: handler.Init,
 			},
 			{
-				Name:   "build",
-				Usage:  "Builds your gomode",
+				Name:  "build",
+				Usage: "Builds your gomode",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "verbose",
+						Aliases: []string{"v"},
+						Usage:   "Enable verbose mode for enhanced debugging.",
+					},
+				},
 				Action: handler.Build,
 			},
 		},

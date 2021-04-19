@@ -3,7 +3,7 @@ version = 1
 exclude_patterns = [
     ".github/**",
     ".idea/**",
-    "sampgo.toml",
+    "sample/**",
     "Makefile"
 ]
 

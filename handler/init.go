@@ -5,10 +5,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sampgo-cli/config"
 	"sampgo-cli/notify"
+	"sampgo-cli/sampctl"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -92,12 +92,7 @@ func Init(c *cli.Context) error {
 		return err
 	}
 
-	sampctlFound := false
-
-	_, err = exec.LookPath("sampctl")
-	if err == nil {
-		sampctlFound = true
-	}
+	sampctlFound := sampctl.Installed()
 
 	if sampctlFound {
 		// sampctl is available on this system.

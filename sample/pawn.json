@@ -1,0 +1,15 @@
+{
+    "user": "alex",
+    "repo": "TestGomode",
+    "entry": "gamemodes/sampgo.pwn",
+    "output": "gamemodes/sampgo.amx",
+    "dependencies": [
+        "sampctl/samp-stdlib"
+    ],
+    "local": true,
+    "runtime": {
+        "plugins": [
+            "something.so"
+        ]
+    }
+}

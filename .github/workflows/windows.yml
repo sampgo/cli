@@ -9,7 +9,7 @@ on:
 jobs:
 
   amd64:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -22,13 +22,13 @@ jobs:
       run: go get -u
 
     - name: Build
-      run: go build -v -o sampgo_amd64 main.go
+      run: go build -v -o sampgo_amd64.exe main.go
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         # Artifact name
-        name: sampgo_amd64
+        name: sampgo_amd64.exe
         # A file, directory or wildcard pattern that describes what to upload
 
         path: .
@@ -37,7 +37,7 @@ jobs:
         retention-days: 90
 
   i386:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       GOARCH: 386
     steps:
@@ -52,13 +52,13 @@ jobs:
       run: go get -u
 
     - name: Build
-      run: go build -v -o sampgo_386 main.go
+      run: go build -v -o sampgo_386.exe main.go
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         # Artifact name
-        name: sampgo_386
+        name: sampgo_386.exe
         # A file, directory or wildcard pattern that describes what to upload
 
         path: .

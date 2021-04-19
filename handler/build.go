@@ -27,7 +27,7 @@ func defaultBuild(c config.Config) error {
 	}
 
 	// For the time being, we will keep verbose mode persistent.
-	cmd := fmt.Sprintf("go build -x -o %s %s", c.Package.Output, c.Package.Output)
+	cmd := fmt.Sprintf("go build -x -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Output)
 	_, err := exec.Command(cmd).Output()
 
 	if err != nil {

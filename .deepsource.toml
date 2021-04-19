@@ -1,0 +1,19 @@
+version = 1
+
+exclude_patterns = [
+    ".github/**",
+    ".idea/**",
+    "sampgo.toml",
+    "Makefile"
+]
+
+[[analyzers]]
+name = "go"
+enabled = true
+
+  [analyzers.meta]
+  import_root = "github.com/sampgo/cli"
+
+[[transformers]]
+name = "gofmt"
+enabled = true

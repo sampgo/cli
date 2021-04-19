@@ -4,28 +4,29 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	toml2 "github.com/BurntSushi/toml"
-	"github.com/komkom/toml"
 	"io/ioutil"
 	"os"
+
+	toml2 "github.com/BurntSushi/toml"
+	"github.com/komkom/toml"
 )
 
 // Config contains the basic TOML structure acceptable by sampgo.
 type Config struct {
 	Global struct {
-		Sampctl bool `json:"sampctl"`
-	} `json:"global"`
+		Sampctl bool `json:"sampctl" toml:"sampctl"`
+	} `json:"global" toml:"global"`
 
 	Author struct {
-		User string `json:"user"`
-		Repo string `json:"repo"`
-	} `json:"author"`
+		User string `json:"user" toml:"user"`
+		Repo string `json:"repo" toml:"user"`
+	} `json:"author" toml:"author"`
 
 	Package struct {
-		Name   string `json:"name"`
-		Input  string `json:"input"`
-		Output string `json:"output"`
-	} `json:"package"`
+		Name   string `json:"name" toml:"name"`
+		Input  string `json:"input" toml:"input"`
+		Output string `json:"output" toml:"output"`
+	} `json:"package" toml:"package"`
 }
 
 // WriteToml allows you to write a toml file.

@@ -2,8 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/urfave/cli/v2"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,7 +10,77 @@ import (
 	"sampgo-cli/config"
 	"sampgo-cli/notify"
 	"strings"
+
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/urfave/cli/v2"
 )
+
+var questions = []*survey.Question{
+	{
+		Name:     "username",
+		Prompt:   &survey.Input{Message: "What is your username?"},
+		Validate: survey.Required,
+	},
+	{
+		Name:     "repo",
+		Prompt:   &survey.Input{Message: "What is your repo called?"},
+		Validate: survey.Required,
+	},
+	{
+		Name: "gomode",
+		Prompt: &survey.Input{Message: "Enter your gomode name:", Default: func() string {
+			path, err := os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			cwd := strings.Split(path, string(os.PathSeparator)) // current working dir
+			dir := cwd[len(cwd)-1]
+
+			return dir
+		}()},
+		Validate: survey.Required,
+	},
+	{
+		Name: "input",
+		Prompt: &survey.Input{
+			Message: "Enter your gomode entrypoint file name:",
+			Suggest: func(toComplete string) []string {
+				files, _ := filepath.Glob(toComplete + "*.go")
+				return files
+			},
+		},
+		Validate: survey.Required,
+	},
+	{
+		Name: "output",
+		Prompt: &survey.Input{
+			Message: "Enter your desired gomode output path:",
+			Default: func() string {
+				path, err := os.Getwd()
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				cwd := strings.Split(path, string(os.PathSeparator)) // current working dir
+				dir := cwd[len(cwd)-1]
+
+				var ext string
+
+				if string(os.PathSeparator) == "\\" {
+					// Windows.
+					ext = "dll"
+				} else {
+					// Unix-based system.
+					ext = "so"
+				}
+
+				return fmt.Sprintf("../plugins/%s.%s", dir, ext)
+			}(),
+		},
+		Validate: survey.Required,
+	},
+}
 
 func Init(c *cli.Context) error {
 	fileName := "sampgo.toml"
@@ -27,7 +95,7 @@ func Init(c *cli.Context) error {
 	sampctlFound := false
 
 	_, err = exec.LookPath("sampctl")
-	if err != nil {
+	if err == nil {
 		sampctlFound = true
 	}
 
@@ -40,68 +108,7 @@ func Init(c *cli.Context) error {
 		notify.Warning("It is advised that you install sampctl, as it will enhance your sampgo experience.")
 	}
 
-	path, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	cwd := strings.Split(path, string(os.PathSeparator)) // current working dir
-	dir := cwd[len(cwd)-1]                               // current dir
-
 	// start structuring our "survey" per-se
-	questions := []*survey.Question{
-		{
-			Name:      "username",
-			Prompt:    &survey.Input{Message: "What is your username?"},
-			Validate:  survey.Required,
-			Transform: survey.Title,
-		},
-		{
-			Name:      "repo",
-			Prompt:    &survey.Input{Message: "What is your repo called?"},
-			Validate:  survey.Required,
-			Transform: survey.Title,
-		},
-		{
-			Name:      "gomode",
-			Prompt:    &survey.Input{Message: "Enter your gomode name:", Default: dir},
-			Validate:  survey.Required,
-			Transform: survey.Title,
-		},
-		{
-			Name: "input",
-			Prompt: &survey.Input{
-				Message: "Enter your gomode entrypoint file name:",
-				Suggest: func(toComplete string) []string {
-					files, _ := filepath.Glob(toComplete + "*.go")
-					return files
-				},
-			},
-			Validate:  survey.Required,
-			Transform: survey.Title,
-		},
-		{
-			Name: "output",
-			Prompt: &survey.Input{
-				Message: "Enter your desired gomode output path:",
-				Default: func(cd string) string {
-					var ext string
-
-					if string(os.PathSeparator) == "\\" {
-						// Windows.
-						ext = "dll"
-					} else {
-						// Unix-based system.
-						ext = "so"
-					}
-
-					return fmt.Sprintf("../plugins/%s.%s", cd, ext)
-				}(dir),
-			},
-			Validate:  survey.Required,
-			Transform: survey.Title,
-		},
-	}
 
 	answers := struct {
 		Username string // Author username.

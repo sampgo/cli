@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 	"sampgo-cli/handler"
+
+	"github.com/urfave/cli/v2"
 )
 
 func main() {

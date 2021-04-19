@@ -1,4 +1,4 @@
-name: Go
+name: linux
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         # how long the files will be stored on github's servers
         retention-days: 90
 
-  386:
+  i386:
     runs-on: ubuntu-latest
     env:
       GOARCH: 386

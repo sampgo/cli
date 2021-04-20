@@ -20,8 +20,9 @@ func main() {
 				Action: handler.Init,
 			},
 			{
-				Name:  "build",
-				Usage: "Builds your gomode",
+				Name:   "build",
+				Usage:  "Builds your gomode",
+				Action: handler.Build,
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:    "verbose",
@@ -30,7 +31,6 @@ func main() {
 						Value:   false,
 					},
 				},
-				Action: handler.Build,
 			},
 		},
 	}

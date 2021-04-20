@@ -10,11 +10,19 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func defaultBuild(c resource.Config) error {
+func defaultBuild(c resource.Config, v bool) error {
+	var cmd string
 	env.Set()
 
 	// For the time being, we will keep verbose mode persistent.
-	cmd := fmt.Sprintf("go build -x -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Input)
+	if v {
+		// verbose mode enabled
+		cmd = fmt.Sprintf("go build -x -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Input)
+	} else {
+		// verbose mode disabled.
+		cmd = fmt.Sprintf("go build -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Input)
+	}
+
 	_, err := exec.Command(cmd).Output()
 
 	if err != nil {
@@ -25,8 +33,8 @@ func defaultBuild(c resource.Config) error {
 	return nil
 }
 
-func sampctlBuild(c resource.Config) error {
-	err := defaultBuild(c)
+func sampctlBuild(c resource.Config, v bool) error {
+	err := defaultBuild(c, v)
 
 	if err != nil {
 		return err
@@ -54,11 +62,11 @@ func Build(ctx *cli.Context) error {
 	if c.Global.Sampctl {
 		// begin the sampctl related stuff.
 		// TODO: handle error.
-		sampctlBuild(c)
+		sampctlBuild(c, ctx.Bool("verbose"))
 	} else {
 		// Build without the sampctl stuff.
 		// TODO: handle error.
-		defaultBuild(c)
+		defaultBuild(c, ctx.Bool("verbose"))
 	}
 
 	return nil

@@ -23,10 +23,11 @@ func main() {
 				Name:  "build",
 				Usage: "Builds your gomode",
 				Flags: []cli.Flag{
-					&cli.StringFlag{
+					&cli.BoolFlag{
 						Name:    "verbose",
 						Aliases: []string{"v"},
 						Usage:   "Enable verbose mode for enhanced debugging.",
+						Value:   false,
 					},
 				},
 				Action: handler.Build,

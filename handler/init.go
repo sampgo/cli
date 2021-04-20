@@ -6,8 +6,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sampgo-cli/config"
+	"runtime"
 	"sampgo-cli/notify"
+	"sampgo-cli/resource"
 	"sampgo-cli/sampctl"
 	"strings"
 
@@ -67,7 +68,7 @@ var questions = []*survey.Question{
 
 				var ext string
 
-				if string(os.PathSeparator) == "\\" {
+				if runtime.GOOS == "windows" {
 					// Windows.
 					ext = "dll"
 				} else {
@@ -121,7 +122,7 @@ func Init(c *cli.Context) error {
 		return nil
 	}
 
-	conf := config.Config{}
+	conf := resource.Config{}
 
 	conf.Global.Sampctl = sampctlFound
 
@@ -132,7 +133,7 @@ func Init(c *cli.Context) error {
 	conf.Package.Input = answers.Input
 	conf.Package.Output = answers.Output
 
-	err = config.WriteToml(fileName, conf)
+	err = resource.WriteToml(fileName, conf)
 	if err != nil {
 		notify.Error("sampgo configuration could not be written to.")
 		return nil

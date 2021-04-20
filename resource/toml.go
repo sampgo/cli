@@ -1,4 +1,4 @@
-package config
+package resource
 
 import (
 	"bytes"
@@ -17,7 +17,7 @@ type Global struct {
 
 type Author struct {
 	User string `json:"user" toml:"user"`
-	Repo string `json:"repo" toml:"user"`
+	Repo string `json:"repo" toml:"repo"`
 }
 
 type Package struct {

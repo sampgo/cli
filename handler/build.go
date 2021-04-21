@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"sampgo-cli/env"
 	"sampgo-cli/notify"
 	"sampgo-cli/resource"
@@ -12,30 +13,42 @@ import (
 )
 
 func defaultBuild(c resource.Config, v bool) error {
-	env.Set()
+	shell := "sh"
+	cmdArg := "-c"
 
+	if runtime.GOOS == "windows" {
+		shell = "cmd"
+		cmdArg = "/C"
+	}
+
+	env.Set()
 	var args []string
 
 	// For the time being, we will keep verbose mode persistent.
 	if v {
 		// verbose mode enabled
-		args = []string{"bash", "-c", "go build", "-x", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
+		args = []string{shell, cmdArg, "go build", "-x", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
 
 		notify.Info(fmt.Sprintf("using %s as entrypoint file", c.Package.Input))
 		notify.Info(fmt.Sprintf("setting output to %s", c.Package.Output))
 	} else {
-		args = []string{"bash", "-c", "go build", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
+		args = []string{shell, cmdArg, "go build", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
 	}
 
-	path, _ := exec.LookPath("bash")
+	path, err := exec.LookPath(shell)
+
+	if err != nil {
+		notify.Error("the path to your system shell was not able to be determined.")
+		return fmt.Errorf("path to system shell not found")
+	}
+
 	cmd := &exec.Cmd{
 		Path:   path,
 		Args:   args,
 		Stdout: os.Stdout,
 		Stderr: os.Stderr,
 	}
-
-	err := cmd.Run()
+	err = cmd.Run()
 
 	if err != nil {
 		env.Unset()

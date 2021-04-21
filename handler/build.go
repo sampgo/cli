@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"sampgo-cli/env"
 	"sampgo-cli/notify"
@@ -11,24 +12,39 @@ import (
 )
 
 func defaultBuild(c resource.Config, v bool) error {
-	var cmd string
 	env.Set()
+
+	var args []string
 
 	// For the time being, we will keep verbose mode persistent.
 	if v {
 		// verbose mode enabled
-		cmd = fmt.Sprintf("go build -x -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Input)
+		args = []string{"bash", "-c", "go build", "-x", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
+
+		notify.Info(fmt.Sprintf("using %s as entrypoint file", c.Package.Input))
+		notify.Info(fmt.Sprintf("setting output to %s", c.Package.Output))
 	} else {
-		// verbose mode disabled.
-		cmd = fmt.Sprintf("go build -buildmode=c-shared -o %s %s", c.Package.Output, c.Package.Input)
+		args = []string{"bash", "-c", "go build", "-buildmode=c-shared", "-o", c.Package.Output, c.Package.Input}
 	}
 
-	_, err := exec.Command(cmd).Output()
+	path, _ := exec.LookPath("bash")
+	cmd := &exec.Cmd{
+		Path:   path,
+		Args:   args,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+	}
+
+	err := cmd.Run()
 
 	if err != nil {
 		env.Unset()
+		fmt.Println(cmd.String())
+
 		return err
 	}
+
+	env.Unset()
 
 	return nil
 }

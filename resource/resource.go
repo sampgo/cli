@@ -2,7 +2,7 @@ package resource
 
 import (
 	"io/ioutil"
-	//"sampgo-cli/notify"
+	"sampgo-cli/notify"
 )
 
 type CfgDialect int

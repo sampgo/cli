@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	//"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"

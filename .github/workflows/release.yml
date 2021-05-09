@@ -24,6 +24,8 @@ jobs:
 
       - name: Get dependencies
         run: go get -u
+        env:
+          GO111MODULE: off
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2

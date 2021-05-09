@@ -66,10 +66,10 @@ jobs:
         # how long the files will be stored on github's servers
         retention-days: 90
 
-  arm64:
+  arm:
     runs-on: windows-latest
     env:
-      GOARCH: arm64
+      GOARCH: arm
     steps:
     - uses: actions/checkout@v2
 
@@ -82,13 +82,13 @@ jobs:
       run: go get -u
 
     - name: Build
-      run: go build -v -o sampgo_arm64.exe main.go
+      run: go build -v -o sampgo_arm.exe main.go
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         # Artifact name
-        name: sampgo_arm64.exe
+        name: sampgo_arm.exe
         # A file, directory or wildcard pattern that describes what to upload
 
         path: .

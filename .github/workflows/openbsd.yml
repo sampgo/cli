@@ -101,7 +101,7 @@ jobs:
         # how long the files will be stored on github's servers
         retention-days: 90
 
-  i386:
+  arm:
     runs-on: ubuntu-latest
     env:
       GOOS: openbsd

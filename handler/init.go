@@ -84,10 +84,10 @@ var questions = []*survey.Question{
 
 func Init(c *cli.Context) error {
 	fileName := "sampgo.toml"
-	
+
 	_, err := resource.Exists(fileName)
 
-	if(err == nil) {
+	if err == nil {
 		notify.Error("A sampgo package already exists in your directory.")
 		return err
 	}

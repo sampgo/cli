@@ -1,10 +1,10 @@
-name: freebsd
+name: openbsd
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, development ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, development ]
 
 jobs:
 

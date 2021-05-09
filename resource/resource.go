@@ -2,7 +2,6 @@ package resource
 
 import (
 	"io/ioutil"
-	"sampgo-cli/notify"
 )
 
 type CfgDialect int
@@ -24,13 +23,14 @@ func New(fileName string, dialect CfgDialect) Parser {
 	}
 }
 
-func Exists(fileName string) bool {
+func Exists(fileName string) (bool, error) {
 	_, err := ioutil.ReadFile(fileName)
+
 	if err == nil {
 		// sampgo.toml (or fileName) already exists in the current directory.
-		notify.Error("A sampgo package already exists in your directory.")
-		return false
+		return true, nil
 	}
 
-	return true
+	// sampgo.toml (or fileName) doesn't exists in the current directory.
+	return false, err
 }

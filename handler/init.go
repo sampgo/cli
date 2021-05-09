@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -85,10 +84,10 @@ var questions = []*survey.Question{
 
 func Init(c *cli.Context) error {
 	fileName := "sampgo.toml"
+	
+	_, err := resource.Exists(fileName)
 
-	_, err := ioutil.ReadFile(fileName)
-	if err == nil {
-		// sampgo.toml (or fileName) already exists in the current directory.
+	if(err == nil) {
 		notify.Error("A sampgo package already exists in your directory.")
 		return err
 	}
